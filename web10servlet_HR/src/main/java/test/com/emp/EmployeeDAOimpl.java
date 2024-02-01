@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import test.com.db.DBinfo;
+import test.com.job.JOBVO;
 
 public class EmployeeDAOimpl implements EmployeeDAO {
 
@@ -562,6 +563,72 @@ public class EmployeeDAOimpl implements EmployeeDAO {
 		} // end finally
 
 		return total_rows;
+	}
+
+
+	@Override
+	public int insert(EmployeeVO vo) {
+		System.out.println("insert()....");
+		System.out.println(vo);
+		
+		int flag = 0;
+		
+		try {
+			// 1.커넥션(계정접속)
+			conn = DriverManager.getConnection(DBinfo.URL, DBinfo.USER_NAME, DBinfo.PASSWORD);
+			System.out.println("conn successed...");
+
+			// 2.SQL(질의문) 세팅
+			pstmt = conn.prepareStatement(EmployeeSQL.INSERT);
+			pstmt.setString(1, vo.getFirst_name());
+			pstmt.setString(2, vo.getLast_name());
+			pstmt.setString(3, vo.getEmail());
+			pstmt.setString(4, vo.getPhone_number());
+			pstmt.setString(5, vo.getHire_date());
+			pstmt.setString(6, vo.getJob_id());
+			pstmt.setInt(7, vo.getSalary());
+			pstmt.setDouble(8, vo.getCommission_pct());
+			pstmt.setInt(9, vo.getManager_id());
+			pstmt.setInt(10, vo.getDepartment_id());
+
+			flag = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} // end finally
+		
+		return flag;
+	}
+
+
+	@Override
+	public List<JOBVO> getJob_ids() {
+		System.out.println("getJob_ids()...");
+		
+		List<JOBVO> job_ids = new ArrayList<JOBVO>();
+		
+		JOBVO vo = new JOBVO();
+		
+		vo.setJob_id("IT_PROG");
+		
+		job_ids.add(vo);
+		
+		return null;
 	}
 
 }

@@ -9,10 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import test.com.dept.DepartmentVO;
+import test.com.job.JOBVO;
+
+
 /**
  * Servlet implementation class EmployeeController
  */
-@WebServlet({"/empAll.do", "/empSearch.do"})
+@WebServlet({"/empAll.do", "/empSearch.do", "/empInsert.do","/empInsertOK.do"})
 public class EmployeeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private EmployeeDAO dao = new EmployeeDAOimpl();
@@ -54,9 +58,9 @@ public class EmployeeController extends HttpServlet {
 			int totalPageCount = 1;
 			if(total_rows/pageBlock == 0) {
 				totalPageCount = 1;
-			}else if (total_rows%pageBlock == 0) {
+			}else if(total_rows%pageBlock == 0) {
 				totalPageCount = total_rows/pageBlock;
-			}else if (total_rows/pageBlock != 0) {
+			}else if(total_rows/pageBlock != 0) {
 				totalPageCount = total_rows/pageBlock + 1;
 			}
 			
@@ -85,9 +89,9 @@ public class EmployeeController extends HttpServlet {
 			int totalPageCount = 1;
 			if(total_rows/pageBlock == 0) {
 				totalPageCount = 1;
-			}else if (total_rows%pageBlock == 0) {
+			}else if(total_rows%pageBlock == 0) {
 				totalPageCount = total_rows/pageBlock;
-			}else if (total_rows/pageBlock != 0) {
+			}else if(total_rows/pageBlock != 0) {
 				totalPageCount = total_rows/pageBlock + 1;
 			}
 			
@@ -95,10 +99,60 @@ public class EmployeeController extends HttpServlet {
 			
 			request.getRequestDispatcher("emp/selectAll.jsp").forward(request, response);
 			
+		}else if(sPath.equals("/empInsert.do")) {
+			List<JOBVO> job_ids = dao.getJob_ids();
+			for(JOBVO x : job_ids) {
+				System.out.println(x.getJob_id());
+			}
+			
+			request.setAttribute("dob_ids", job_ids);
+			
+			request.getRequestDispatcher("emp/insert.jsp").forward(request, response);
+		}else if(sPath.equals("/empInsertOK.do")) {
+			
+			String first_name = request.getParameter("first_name");
+			String last_name = request.getParameter("last_name");
+			String email = request.getParameter("email");
+			String phone_number = request.getParameter("phone_number");
+			String hire_date = request.getParameter("hire_date");
+			String job_id = request.getParameter("job_id");
+			String salary = request.getParameter("salary");
+			String commission_pct = request.getParameter("commission_pct");
+			String manager_id = request.getParameter("manager_id");
+			String department_id = request.getParameter("department_id");
+			
+			System.out.println("first_name:"+first_name);
+			System.out.println("last_name:"+last_name);
+			System.out.println("email:"+email);
+			System.out.println("phone_number:"+phone_number);
+			System.out.println("hire_date:"+hire_date);
+			System.out.println("job_id:"+job_id);
+			System.out.println("salary:"+salary);
+			System.out.println("commission_pct:"+commission_pct);
+			System.out.println("manager_id:"+manager_id);
+			System.out.println("department_id:"+department_id);
+			
+			EmployeeVO vo = new EmployeeVO();
+			vo.setFirst_name(first_name);
+			vo.setLast_name(last_name);
+			vo.setEmail(email);
+			vo.setPhone_number(phone_number);
+			vo.setHire_date(hire_date);
+			vo.setJob_id(job_id);
+			vo.setSalary(Integer.parseInt(salary));
+			vo.setCommission_pct(Double.parseDouble(commission_pct));
+			vo.setManager_id(Integer.parseInt(manager_id));
+			vo.setDepartment_id(Integer.parseInt(department_id));
+			
+			int result = dao.insert(vo);
+			System.out.println("result:"+result);
+			
+			if(result == 1) {
+				response.sendRedirect("empAll.do");
+			}else {
+				response.sendRedirect("empInsert.do");
+			}
 		}
-		
-		
-		
 	}//doGet
 
 	/**
@@ -109,5 +163,4 @@ public class EmployeeController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");// post요청시 한글처리
 		doGet(request, response);
 	}
-
 }

@@ -56,10 +56,10 @@
                 <th>이름</th>
                 <th>성</th>
                 <th>이메일</th>
-                <th>전화번</th>
-                <th>입사</th>
-                <th>사원번</th>
-                <th>입사</th>
+                <th>전화번호</th>
+                <th>입사일</th>
+                <th>사원번호</th>
+                <th>연봉</th>
                 <th>보너스</th>
                 <th>매니저번호</th>
                 <th>부서번호</th>
@@ -92,7 +92,7 @@
 	                	<a href="empAll.do?cpage=${i}">${i} &nbsp;</a>
                 		</c:if>
                 		<c:if test="${param.searchKey != null}">
-                			<a href="empSearch.do?searchKey=${param.searchKey}&searchWord=${param.searchWord}">${i}</a>
+                			<a href="empSearch.do?searchKey=${param.searchKey}&searchWord=${param.searchWord}&cpage=${i}">${i}</a>
                 		</c:if>
                 	</c:forEach>
                 </td>

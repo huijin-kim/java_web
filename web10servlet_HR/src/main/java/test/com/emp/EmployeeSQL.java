@@ -49,5 +49,8 @@ public interface EmployeeSQL {
 	String SEARCH_TOTAL_ROWS_NAME = "select count(*) total_rows from employees where first_name||' '||last_name like ?";
 	String SEARCH_TOTAL_ROWS_JOBID = "select count(*) total_rows from employees where job_id like ?";
 
+	String INSERT = "INSERT INTO employees(employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id) "
+			+ "VALUES(EMPLOYEES_SEQ.NEXTVAL,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 
 }
