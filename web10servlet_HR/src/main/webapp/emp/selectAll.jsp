@@ -40,12 +40,12 @@
 	<jsp:include page="../top_menu.jsp"></jsp:include>
     <h1>사원목록</h1>
     <hr>
-    <form action="empAll.do">
+    <form action="empSearch.do">
     	<select name="searchKey">
-    		<option value="title">title</option>
-    		<option value="content">content</option>
+    		<option value="name">name</option>
+    		<option value="job_id">job_id</option>
     	</select>
-    	<input type="text" name="searchWord" value="ja">
+    	<input type="text" name="searchWord" value="${param.searchWord}">
     	<input type="submit" value="search">
     	
     </form>
@@ -53,8 +53,8 @@
         <thead>
             <tr>
                 <th>번호</th>
-                <th>이름성</th>
                 <th>이름</th>
+                <th>성</th>
                 <th>이메일</th>
                 <th>전화번</th>
                 <th>입사</th>
@@ -68,7 +68,7 @@
         <tbody>
         	<c:forEach var="vo" items="${vos}">
             <tr>
-                <td><a href="empSelectOne.do?employee_id=${vo.employee_id}">${vo.employee_id}</a></td>
+                <td><a href="empOne.do?employee_id=${vo.employee_id}">${vo.employee_id}</a></td>
                 <td>${vo.first_name}</td>
                 <td>${vo.last_name}</td>
                 <td>${vo.email}</td>
@@ -79,7 +79,7 @@
                 <td>${vo.commission_pct}</td>
                 <td>${vo.manager_id}</td>
                 <td>${vo.department_id}</td>
-              <%--   <td><a href="b_delete.do?num=${vo.num}">글삭제</a></td> --%>
+              <%--   <td><a href="empDel.do?employee_id=${vo.employee_id}">글삭제</a></td> --%>
             </tr>
         	</c:forEach>
             
@@ -88,7 +88,12 @@
             <tr>
                 <td colspan="11">
                 	<c:forEach var="i" begin="1" end="${totalPageCount}">
+                		<c:if test="${param.searchKey== null}">
 	                	<a href="empAll.do?cpage=${i}">${i} &nbsp;</a>
+                		</c:if>
+                		<c:if test="${param.searchKey != null}">
+                			<a href="empSearch.do?searchKey=${param.searchKey}&searchWord=${param.searchWord}">${i}</a>
+                		</c:if>
                 	</c:forEach>
                 </td>
             </tr>

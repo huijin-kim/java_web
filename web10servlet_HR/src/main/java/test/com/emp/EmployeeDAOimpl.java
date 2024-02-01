@@ -416,4 +416,152 @@ public class EmployeeDAOimpl implements EmployeeDAO {
 		return total_rows;
 	}
 
+
+	@Override
+	public List<EmployeeVO> searchList(String searchKey, String searchWord, int cpage, int pageBlock) {
+		System.out.println("searchList()....");
+		System.out.println(searchKey);
+		System.out.println(searchWord);
+		
+		System.out.println("cpage:" + cpage);
+		System.out.println("pageBlock:" + pageBlock);
+
+		int startRow = (cpage - 1) * pageBlock + 1;
+		int endRow = startRow + pageBlock - 1;
+		System.out.println(startRow + "," + endRow);
+		
+		String sql = "";
+		if (searchKey.equals("name")) {
+			sql = EmployeeSQL.SEARCHLIST_PAGE_BLOCK_NAME;
+		} else if (searchKey.equals("job_id")) {
+			sql = EmployeeSQL.SEARCHLIST_PAGE_BLOCK_JOBID;
+		}
+
+		
+		List<EmployeeVO> vos = new ArrayList<EmployeeVO>();
+
+		try {
+			// 1.커넥션(계정접속)
+			conn = DriverManager.getConnection(DBinfo.URL, DBinfo.USER_NAME, DBinfo.PASSWORD);
+			System.out.println("conn successed...");
+
+			// 2.SQL(질의문) 세팅
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%"+searchWord+"%");
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
+			System.out.println(pstmt);
+
+			// 3.결과반환 rs >> vos
+			rs = pstmt.executeQuery();
+			System.out.println(rs);
+			while (rs.next()) {
+				EmployeeVO vo2 = new EmployeeVO();
+				vo2.setEmployee_id(rs.getInt("employee_id"));
+				vo2.setFirst_name(rs.getString("first_name"));
+				vo2.setLast_name(rs.getString("last_name"));
+				vo2.setEmail(rs.getString("email"));
+				vo2.setPhone_number(rs.getString("phone_number"));
+				vo2.setHire_date(rs.getString("hire_date"));
+				vo2.setJob_id(rs.getString("job_id"));
+				vo2.setSalary(rs.getInt("salary"));
+				vo2.setCommission_pct(rs.getDouble("commission_pct"));
+				vo2.setManager_id(rs.getInt("manager_id"));
+				vo2.setDepartment_id(rs.getInt("department_id"));
+				vos.add(vo2);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} // end finally
+
+		return vos;
+		
+		
+	}
+
+
+	@Override
+	public int getSearchTotalRows(String searchKey, String searchWord) {
+		System.out.println("getSearchTotalRows()....");
+		System.out.println(searchKey);
+		System.out.println(searchWord);
+		
+		String sql = "";
+		if (searchKey.equals("name")) {
+			sql = EmployeeSQL.SEARCH_TOTAL_ROWS_NAME;
+		} else if (searchKey.equals("job_id")) {
+			sql = EmployeeSQL.SEARCH_TOTAL_ROWS_JOBID;
+		}
+		
+		int total_rows = 0;
+		
+		try {
+			// 1.커넥션(계정접속)
+			conn = DriverManager.getConnection(DBinfo.URL, DBinfo.USER_NAME, DBinfo.PASSWORD);
+			System.out.println("conn successed...");
+
+			// 2.SQL(질의문) 세팅
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + searchWord + "%");
+			System.out.println(pstmt);
+
+			// 3.결과반환 rs >> vos
+			rs = pstmt.executeQuery();
+			System.out.println(rs);
+			while (rs.next()) {
+				total_rows = rs.getInt("total_rows");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} // end finally
+
+		return total_rows;
+	}
+
 }

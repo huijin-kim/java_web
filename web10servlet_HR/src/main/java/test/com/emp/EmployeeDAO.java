@@ -16,4 +16,8 @@ public interface EmployeeDAO {
 	
 	//emp + dept + job
 	public List<EmpJoinDeptJoinJobVO> selectAllEmpJoinDeptJoinJob();
+	public List<EmployeeVO> searchList(String searchKey, String searchWord, int cpage, int pageBlock);
+
+	public int getSearchTotalRows(String searchKey, String searchWord);
+
 }
