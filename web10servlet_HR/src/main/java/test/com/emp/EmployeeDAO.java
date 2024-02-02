@@ -2,6 +2,7 @@ package test.com.emp;
 
 import java.util.List;
 
+import test.com.dept.DepartmentVO;
 import test.com.job.JOBVO;
 
 public interface EmployeeDAO {
@@ -22,6 +23,16 @@ public interface EmployeeDAO {
 
 	public int getSearchTotalRows(String searchKey, String searchWord);
 	public int insert(EmployeeVO vo);
+
 	public List<JOBVO> getJob_ids();
+	public List<DepartmentVO> getmanager_ids();
+	public List<DepartmentVO> getdepartment_ids();
+	public EmployeeVO selectOne(EmployeeVO vo);
+	
+	public int update(EmployeeVO vo);
+
+	public int delete(EmployeeVO vo);
+	
+	
 
 }

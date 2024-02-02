@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import test.com.db.DBinfo;
+import test.com.emp.EmployeeSQL;
+import test.com.emp.EmployeeVO;
+import test.com.location.LocationVO;
 
 
 public class DepartmentDAOimpl implements DepartmentDAO {
@@ -396,4 +399,187 @@ public class DepartmentDAOimpl implements DepartmentDAO {
 		return flag;
 	}
 
+
+	@Override
+	public List<EmployeeVO> getEmployeeIds() {
+		System.out.println("getEmployees_ids()...");
+
+		List<EmployeeVO> employee_ids = new ArrayList<EmployeeVO>();
+		
+		try {
+			conn = DriverManager.getConnection(DBinfo.URL, DBinfo.USER_NAME, DBinfo.PASSWORD);
+			System.out.println("conn successed...");
+			
+			pstmt = conn.prepareStatement(DepartmentSQL.INSERT_EMPLOYEE_ID);
+		
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				EmployeeVO vo = new EmployeeVO();
+				vo.setEmployee_id(rs.getInt("employee_id"));
+				employee_ids.add(vo);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} // end finally
+		
+		return employee_ids;
+	}
+
+
+	@Override
+	public List<LocationVO> getLocation_ids() {
+		System.out.println("getLocations_ids()...");
+
+		List<LocationVO> location_ids = new ArrayList<LocationVO>();
+		
+		try {
+			conn = DriverManager.getConnection(DBinfo.URL, DBinfo.USER_NAME, DBinfo.PASSWORD);
+			System.out.println("conn successed...");
+			
+			pstmt = conn.prepareStatement(DepartmentSQL.INSERT_LOCATION_ID);
+		
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				LocationVO vo = new LocationVO();
+				vo.setLocation_id(rs.getInt("location_id"));
+				location_ids.add(vo);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} // end finally
+		
+		return location_ids;
+	}
+
+
+
+	@Override
+	public DepartmentVO selectOne(DepartmentVO vo) {
+		System.out.println("selectOne()....");
+		System.out.println(vo);
+		
+		DepartmentVO vo2 = new DepartmentVO();
+
+		try {
+			// 1.커넥션(계정접속)
+			conn = DriverManager.getConnection(DBinfo.URL, DBinfo.USER_NAME, DBinfo.PASSWORD);
+			System.out.println("conn successed...");
+
+			// 2.SQL(질의문) 세팅
+			pstmt = conn.prepareStatement(DepartmentSQL.SELECT_ONE);
+			pstmt.setInt(1, vo.getDepartment_id());
+			System.out.println(pstmt);
+
+			// 3.결과반환 rs >> vos
+			rs = pstmt.executeQuery();
+			System.out.println(rs);
+			while (rs.next()) {
+				vo2.setDepartment_id(rs.getInt("department_id"));
+				vo2.setDepartment_name(rs.getString("department_name"));
+				vo2.setManager_id(rs.getInt("manager_id"));
+				vo2.setLocation_id(rs.getInt("location_id"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} // end finally
+		return vo2;
+	}
+
+
+	@Override
+	public int delete(EmployeeVO vo) {
+		System.out.println("delete()....");
+		System.out.println(vo);
+
+		int flag = 0;
+
+		try {
+			// 1.커넥션(계정접속)
+			conn = DriverManager.getConnection(DBinfo.URL, DBinfo.USER_NAME, DBinfo.PASSWORD);
+			System.out.println("conn successed...");
+
+			// 2.SQL(질의문) 세팅
+			pstmt = conn.prepareStatement(DepartmentSQL.DELETE);
+			pstmt.setInt(1, vo.getDepartment_id());
+			
+			flag = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} // end finally
+
+		return flag;
+	}
+	
+	
 }

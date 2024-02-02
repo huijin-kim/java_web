@@ -25,4 +25,16 @@ public interface DepartmentSQL {
 
 	String INSERT = "INSERT INTO DEPARTMENTS(department_id, department_name, manager_id, location_id) values(?,?,?,?)";
 
+
+	String INSERT_EMPLOYEE_ID = "select employee_id from employees order by employee_id";
+
+
+	String INSERT_LOCATION_ID ="select location_id from locations "
+			+ "order by location_id";
+	
+	String SELECT_ONE = "select * from departments where department_id = ?";
+
+	
+	String DELETE = "delete from departments where department_id=?";
+
 }

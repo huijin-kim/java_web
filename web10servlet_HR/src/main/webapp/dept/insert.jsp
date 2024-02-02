@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -79,11 +80,23 @@
                 </tr>
                 <tr>
                     <td><label for="manager_id">manager_id</label></td>
-                    <td><input type="text" id="manager_id" name="manager_id" value="manager_id" placeholder="manager_id"></td>
-                </tr>
+					<td>
+						<select name="manager_id">
+							<c:forEach var="Employees" items="${employeeIds}">
+								<option value="${Employees.employee_id}">${Employees.employee_id}</option>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>
                 <tr>
                     <td><label for="location_id">location_id</label></td>
-                    <td><input type="text" id="location_id" name="location_id" value="location_id" placeholder="location_id"></td>
+                 	<td>
+						<select name="location_id">
+							<c:forEach var="locations" items="${location_ids}">
+								<option value="${locations.location_id}">${locations.location_id}</option>
+							</c:forEach>
+						</select>
+					</td>
                 </tr>
               
                 <tr>

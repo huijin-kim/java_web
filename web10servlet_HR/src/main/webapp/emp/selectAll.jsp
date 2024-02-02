@@ -63,6 +63,7 @@
                 <th>보너스</th>
                 <th>매니저번호</th>
                 <th>부서번호</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -79,7 +80,7 @@
                 <td>${vo.commission_pct}</td>
                 <td>${vo.manager_id}</td>
                 <td>${vo.department_id}</td>
-              <%--   <td><a href="empDel.do?employee_id=${vo.employee_id}">글삭제</a></td> --%>
+             	<td><a href="empDelete.do?employee_id=${vo.employee_id}">사원삭제</a></td>
             </tr>
         	</c:forEach>
             

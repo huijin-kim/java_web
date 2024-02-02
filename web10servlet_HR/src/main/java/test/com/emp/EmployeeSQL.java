@@ -52,5 +52,20 @@ public interface EmployeeSQL {
 	String INSERT = "INSERT INTO employees(employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id) "
 			+ "VALUES(EMPLOYEES_SEQ.NEXTVAL,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+	String SELECT_JOB_ID = "select job_id from jobs order by job_id";
+
+	String SELECT_MANAGER_ID ="select manager_id from departments where manager_id is not null order by manager_id";
+
+	String SELECT_DEPARTMENT_ID = "select department_id from departments where department_id is not null order by department_id";
+
+	String SELECT_ONE = "select * from employees where employee_id=?";
+	
+	String UPDATE = "update employees set first_name=?, last_name=?,email=?,"
+			+ "phone_number=?,hire_date=?,job_id=?,salary=?,commission_pct=?,"
+			+ "manager_id=?,department_id=? "
+			+ "where employee_id=?";
+	String DELETE = "delete from employees "
+			+ "where employee_id=?";
+
 
 }
